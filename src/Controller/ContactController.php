@@ -4,9 +4,11 @@ namespace App\Controller;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Response;
+use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 use Doctrine\ORM\EntityManagerInterface;
 use App\Entity\Contact;
+use App\Form\ContactType;
 
 class ContactController extends AbstractController
 {
@@ -17,13 +19,32 @@ class ContactController extends AbstractController
         $this->entityManager = $entityManager;
     }
 
-    #[Route('/contact/{id}', name: 'app_contact')]
+    #[Route('/contact/get/{id}', name: 'app_contact')]
     public function index($id): Response
     {
         $contact = $this->entityManager->getRepository(Contact::class)->findOneById($id);
 
         return $this->render('contact/index.html.twig', [
             'contact' => $contact
+        ]);
+    }
+
+    #[Route('/contact/add', name: 'contact_add')]
+    public function add(Request $request): Response
+    {
+        $contact = new Contact();
+        $form = $this->createForm(ContactType::class, $contact);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $contact = $form->getData();
+            $this->entityManager->persist($contact);
+            $this->entityManager->flush();
+        }
+
+        return $this->render('contact/add.html.twig', [
+            'form' => $form->createView()
         ]);
     }
 }
