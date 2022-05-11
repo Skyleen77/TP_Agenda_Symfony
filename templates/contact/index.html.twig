@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Contact{% endblock %}
+
+{% block body %}
+    <div class="jumbotron">
+        <h1 class="display-4">{{ contact.nom }} {{ contact.prenom }}</h1>
+        <p class="lead">{{ contact.age }} ans</p>
+        <hr class="my-4">
+        <p>{{ contact.adresse }}</p>
+        <p>{{ contact.telephone }}</p>
+        <p>{{ contact.ville }}</p>
+        <a class="btn btn-primary btn-lg" href="#" role="button">Learn more</a>
+    </div>
+{% endblock %}
