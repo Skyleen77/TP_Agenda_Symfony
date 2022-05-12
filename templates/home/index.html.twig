@@ -31,8 +31,10 @@
                         </td>
                         <td>
                             <a href="{{ path('app_contact', { 'id': c.id }) }}" type="button" class="btn btn-info">Afficher</a>
-                            <a href="{{ path('new_number', { 'id': c.id }) }}" type="button" class="btn btn-warning">Modifier</a>    
-                            <a href="{{ path('del_contact', { 'id': c.id }) }}" type="button" class="btn btn-danger">Supprimer</a>
+                            {% if app.user %}
+                                <a href="{{ path('new_number', { 'id': c.id }) }}" type="button" class="btn btn-warning">Modifier</a>    
+                                <a href="{{ path('del_contact', { 'id': c.id }) }}" type="button" class="btn btn-danger">Supprimer</a>
+                            {% endif %}
                         </td>
                     </tr>
                 {% endfor %}

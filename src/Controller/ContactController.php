@@ -47,4 +47,27 @@ class ContactController extends AbstractController
             'form' => $form->createView()
         ]);
     }
+
+    #[Route('/contact/modifier/{id}', name: 'contact_update')]
+    public function update(Request $request, $id): Response
+    {
+        $contact = $this->entityManager->getRepository(Contact::class)->findOneById($id);
+        
+        if ($contact)
+        {
+            return $this->redirectToRoute('contact_add');
+        }$form = $this->createForm(ContactType::class, $contact);
+
+        $form->handleRequest($request);
+
+        if($form->isSubmitted() && $form->isValid()) {
+            $contact = $form->getData();
+            $this->entityManager->persist($contact);
+            $this->entityManager->flush();
+        }
+
+        return $this->render('contact/add.html.twig', [
+            'form' => $form->createView()
+        ]);
+    }
 }
